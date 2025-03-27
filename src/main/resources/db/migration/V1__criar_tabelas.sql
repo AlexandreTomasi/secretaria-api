@@ -68,3 +68,10 @@ CREATE TABLE lotacao (
     lot_portaria VARCHAR(100)
 );
 
+CREATE TABLE usuario (
+    user_id SERIAL PRIMARY KEY,
+    user_nome VARCHAR(200) NOT NULL,
+    user_login VARCHAR(20) NOT NULL,
+    user_senha VARCHAR(200) NOT NULL,
+    user_email VARCHAR(200) NOT NULL
+);

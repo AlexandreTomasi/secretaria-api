@@ -45,3 +45,9 @@ INSERT INTO unidade_endereco (unid_id, end_id) VALUES
 INSERT INTO lotacao (pes_id, unid_id, lot_data_lotacao, lot_data_remocao, lot_portaria) VALUES
 (2, 1, '2021-05-10', NULL, 'Portaria 001/2021'),
 (3, 2, '2019-09-20', NULL, 'Portaria 002/2019');
+
+
+INSERT INTO usuario (user_nome, user_login, user_senha, user_email) VALUES
+('João Silva', 'alexandre', '$2a$10$ai0zicF5DefunYeVEen5zu8wws7sIQZRVfUJ5bfoVDYT5/pd0kfwa', 'alexandre@gmail.com'),
+('Ana Souza', 'marcela', '$2a$10$ai0zicF5DefunYeVEen5zu8wws7sIQZRVfUJ5bfoVDYT5/pd0kfwa', 'marcela@gmail.com'),
+('Pedro Oliveira', 'admin', '$2a$10$ai0zicF5DefunYeVEen5zu8wws7sIQZRVfUJ5bfoVDYT5/pd0kfwa', 'admin@gmail.com');
