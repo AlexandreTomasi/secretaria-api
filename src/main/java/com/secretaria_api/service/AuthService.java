@@ -30,6 +30,10 @@ public class AuthService {
         this.authenticationManager = authenticationManager;
     }
 
+    public String criptografa(String senha){
+        return passwordEncoder.encode(senha);
+    }
+
     /*public AuthResponse register(RegisterRequest request) {
         var user = User.builder()
                 .email(request.getEmail())

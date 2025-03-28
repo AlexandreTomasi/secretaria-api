@@ -1,5 +1,6 @@
 package com.secretaria_api.model;
 
+import com.secretaria_api.dto.UsuarioDTO;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -10,7 +11,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "usuario")
-public class Usuario implements UserDetails {
+public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -69,39 +70,12 @@ public class Usuario implements UserDetails {
         this.email = email;
     }
 
-    // Adicione estes métodos:
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_USER")); // Adapte para suas roles
-    }
-
-    @Override
-    public String getUsername() {
-        return login; // Mapeia o login como username
-    }
-
-    @Override
-    public String getPassword() {
-        return senha; // Mapeia a senha
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
+    public UsuarioDTO toDTO() {
+        return new UsuarioDTO(
+                this.id,
+                this.nome,
+                this.login,
+                this.email
+        );
     }
 }
