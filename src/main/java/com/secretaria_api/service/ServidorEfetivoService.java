@@ -5,9 +5,11 @@ import com.secretaria_api.dto.ServidorEfetivoDTO;
 import com.secretaria_api.dto.ServidorUnidadeDTO;
 import com.secretaria_api.exception.NotFoundException;
 import com.secretaria_api.model.FotoPessoa;
+import com.secretaria_api.model.Lotacao;
 import com.secretaria_api.model.Pessoa;
 import com.secretaria_api.model.ServidorEfetivo;
 import com.secretaria_api.repository.FotoPessoaRepository;
+import com.secretaria_api.repository.LotacaoRepository;
 import com.secretaria_api.repository.PessoaRepository;
 import com.secretaria_api.repository.ServidorEfetivoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,18 +35,43 @@ public class ServidorEfetivoService {
     @Autowired
     private FotoPessoaService fotoPessoaService;
 
+    @Autowired
+    LotacaoRepository lotacaoRepository;
+
+
     public List<EnderecoFuncionalDTO> consultarEnderecoFuncional(String parteNome) {
+        //buscar servidor efetivo.
+        List<ServidorEfetivo> servidores = servidorEfetivoRepository.findByPessoa_NomeContainingIgnoreCase(parteNome);
+        if(servidores == null || servidores.isEmpty()){
+            throw new NotFoundException("Nenhum servidor efetivo encontrado com esse nome");
+        }
+        //buscar unidade lotacao dele
+        boolean temLotacaoAlgum = false;
+        for(ServidorEfetivo servidor : servidores) {
+            List<Lotacao> lotacoes = lotacaoRepository.findByPessoaId(servidor.getPesId());
+            if(lotacoes != null && !lotacoes.isEmpty()){
+                temLotacaoAlgum = true;
+                break;
+            }
+        }
+        if(temLotacaoAlgum == false){
+            throw new NotFoundException("Servidor(es) com esse nome não estão lotados em nenhuma unidade");
+        }
+
         List<Object[]> results =  servidorEfetivoRepository.findEnderecoFuncionalByParteNome(parteNome);
-        return results.stream()
-                .map(EnderecoFuncionalDTO::fromObjectArray)
-                .collect(Collectors.toList());
+        List<EnderecoFuncionalDTO> resposta = results.stream()
+                .map(EnderecoFuncionalDTO::fromObjectArray).toList();
+        if (resposta.isEmpty()) {
+            throw new NotFoundException("Nenhum endereço encontrado na unidade do servidor: " + parteNome);
+        }
+        return resposta;
     }
 
 
     public List<ServidorUnidadeDTO> consultarServidorEfetivoPorUni(Long unidade) {
         List<Object[]> servidores  =  servidorEfetivoRepository.findServidoresByUnidadeId(unidade);
         if(servidores  == null || servidores .isEmpty()){
-            throw new NotFoundException("Nenhum servidor encontrado na unidade informada");
+            throw new NotFoundException("Nenhum servidor efetivo encontrado na unidade informada");
         }
         List<ServidorUnidadeDTO> resultado = new ArrayList<>();
         for (Object[] row : servidores) {

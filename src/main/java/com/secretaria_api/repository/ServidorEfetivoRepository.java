@@ -15,6 +15,7 @@ import java.util.Optional;
 public interface ServidorEfetivoRepository extends CrudRepository<ServidorEfetivo, Long> {
     Page<ServidorEfetivo> findAll(Pageable pageable);
 
+    List<ServidorEfetivo> findByPessoa_NomeContainingIgnoreCase(String nome);
 
     @Query(nativeQuery = true, value = """
         SELECT 

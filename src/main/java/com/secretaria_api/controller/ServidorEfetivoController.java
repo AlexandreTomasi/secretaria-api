@@ -100,9 +100,7 @@ public class ServidorEfetivoController {
             @RequestParam String nome) {
 
         List<EnderecoFuncionalDTO> results = servidorEfetivoService.consultarEnderecoFuncional(nome);
-        if (results.isEmpty()) {
-            throw new NotFoundException("Nenhum servidor efetivo encontrado com o nome informado: " + nome);
-        }
+
         return ResponseEntity.ok(results);
     }
 
