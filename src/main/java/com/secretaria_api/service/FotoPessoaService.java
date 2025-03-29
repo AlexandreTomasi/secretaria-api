@@ -1,6 +1,5 @@
 package com.secretaria_api.service;
 
-import com.secretaria_api.dto.FotoPessoaDTO;
 import com.secretaria_api.model.FotoPessoa;
 import com.secretaria_api.model.Pessoa;
 import com.secretaria_api.repository.FotoPessoaRepository;

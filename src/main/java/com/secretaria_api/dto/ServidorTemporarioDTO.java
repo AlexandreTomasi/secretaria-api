@@ -1,52 +1,30 @@
-package com.secretaria_api.model;
-
-import jakarta.persistence.*;
+package com.secretaria_api.dto;
 
 import java.time.LocalDate;
 
+public class ServidorTemporarioDTO {
+    private Long pesId;
 
-@Entity
-@Table(name = "pessoa")
-public class Pessoa {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "pes_id")
-    private Long id;
-
-    @Column(name = "pes_nome", nullable = false, length = 200)
     private String nome;
 
-    @Column(name = "pes_data_nascimento")
     private LocalDate dataNascimento;
 
-    @Column(name = "pes_sexo", length = 9)
     private String sexo;
 
-    @Column(name = "pes_mae", length = 200)
     private String mae;
 
-    @Column(name = "pes_pai", length = 200)
     private String pai;
 
-    public Pessoa() {
+    private LocalDate dataAdmissao;
+
+    private LocalDate dataDemissao;
+
+    public Long getPesId() {
+        return pesId;
     }
 
-    public Pessoa(Long id, String nome, LocalDate dataNascimento, String sexo, String mae, String pai) {
-        this.id = id;
-        this.nome = nome;
-        this.dataNascimento = dataNascimento;
-        this.sexo = sexo;
-        this.mae = mae;
-        this.pai = pai;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public void setPesId(Long pesId) {
+        this.pesId = pesId;
     }
 
     public String getNome() {
@@ -89,4 +67,19 @@ public class Pessoa {
         this.pai = pai;
     }
 
+    public LocalDate getDataAdmissao() {
+        return dataAdmissao;
+    }
+
+    public void setDataAdmissao(LocalDate dataAdmissao) {
+        this.dataAdmissao = dataAdmissao;
+    }
+
+    public LocalDate getDataDemissao() {
+        return dataDemissao;
+    }
+
+    public void setDataDemissao(LocalDate dataDemissao) {
+        this.dataDemissao = dataDemissao;
+    }
 }

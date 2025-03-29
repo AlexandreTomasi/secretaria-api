@@ -1,11 +1,10 @@
 package com.secretaria_api.controller;
 
 import com.secretaria_api.dto.EnderecoFuncionalDTO;
+import com.secretaria_api.dto.ServidorEfetivoDTO;
 import com.secretaria_api.dto.ServidorUnidadeDTO;
-import com.secretaria_api.dto.UsuarioDTO;
 import com.secretaria_api.exception.NotFoundException;
 import com.secretaria_api.model.ServidorEfetivo;
-import com.secretaria_api.model.Usuario;
 import com.secretaria_api.service.ServidorEfetivoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -212,154 +211,58 @@ public class ServidorEfetivoController {
     }
 
 
-    @Operation(
-            summary = "Cadastrar um Servidor Efetivo",
-            description = "Endpoint para cadastrar um novo Servidor Efetivo informando os dados necessários.",
-            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
-                    description = "Dados do Servidor Efetivo a ser cadastrado",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = ServidorEfetivo.class),
-                            examples = {
-                                    @ExampleObject(
-                                            name = "Exemplo 1 - Servidor Masculino",
-                                            value = """
-                        {
-                            "pesId": 4,
-                            "matricula": "173456"
-                        }
-                        """
-                                    ),
-                                    @ExampleObject(
-                                            name = "Exemplo 2 - Servidor Feminino",
-                                            value = """
-                        {
-                            "pesId": 6,
-                            "matricula": "987654"
-                        }
-                        """
-                                    )
-                            }
-                    )
-            ),
-            responses = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "Servidor Efetivo cadastrado com sucesso",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(implementation = ServidorEfetivo.class),
-                                    examples = @ExampleObject(
-                                            value = """
-                        {
-                            "pesId": 1,
-                            "matricula": "123456"
-                        }
-                        """
-                                    )
-                            )
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "Requisição inválida",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(implementation = ErrorResponse.class),
-                                    examples = @ExampleObject(
-                                            value = """
-                        {
-                            "error": "Bad Request",
-                            "status": 400,
-                            "message": "Dados inválidos para cadastro"
-                        }
-                        """
-                                    )
-                            )
-                    )
-            }
-    )
-    @PostMapping
-    public ResponseEntity<ServidorEfetivo> saveServidorEfetivo(@RequestBody ServidorEfetivo servidorEfetivo) {
-        ServidorEfetivo savedServidor = servidorEfetivoService.saveServidorEfetivo(servidorEfetivo);
-        return ResponseEntity.ok(savedServidor);
-    }
-
-    @Operation(
-            summary = "Alterar um Servidor Efetivo",
-            description = "Endpoint para alterar um novo Servidor Efetivo informando os dados necessários.",
-            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
-                    description = "Dados do Servidor Efetivo a ser cadastrado",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = ServidorEfetivo.class),
-                            examples = {
-                                    @ExampleObject(
-                                            name = "Exemplo 1 - Servidor Masculino",
-                                            value = """
-                        {
-                            "pesId": 3,
-                            "matricula": "555"
-                        }
-                        """
-                                    ),
-                                    @ExampleObject(
-                                            name = "Exemplo 2 - Servidor Feminino",
-                                            value = """
-                        {
-                            "pesId": 2,
-                            "matricula": "666"
-                        }
-                        """
-                                    )
-                            }
-                    )
-            ),
-            responses = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "Servidor Efetivo cadastrado com sucesso",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(implementation = ServidorEfetivo.class),
-                                    examples = @ExampleObject(
-                                            value = """
-                        {
-                            "pesId": 1,
-                            "matricula": "123456"
-                        }
-                        """
-                                    )
-                            )
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "Requisição inválida",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(implementation = ErrorResponse.class),
-                                    examples = @ExampleObject(
-                                            value = """
-                        {
-                            "error": "Bad Request",
-                            "status": 400,
-                            "message": "Dados inválidos para cadastro"
-                        }
-                        """
-                                    )
-                            )
-                    )
-            }
-    )
-    @PutMapping
-    public ResponseEntity<ServidorEfetivo> putServidorEfetivo(@RequestBody ServidorEfetivo servidorEfetivo) {
-        ServidorEfetivo savedServidor = servidorEfetivoService.alteraServidorEfetivo(servidorEfetivo);
-        return ResponseEntity.ok(savedServidor);
-    }
-
     // Endpoint para deletar um servidor efetivo por ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteServidorEfetivo(@PathVariable Long id) {
         servidorEfetivoService.deleteServidorEfetivo(id);
         return ResponseEntity.noContent().build();
+    }
+
+
+    @Operation(
+            summary = "Cadastrar um servidor efetivo",
+            description = "Endpoint para cadastrar uma servidor efetivo",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Dados do Servidor Efetivo a ser cadastrado",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ServidorEfetivo.class),
+                            examples = {@ExampleObject(name = "Exemplo 1 - ServidorTemporario X", value = """
+                        { 
+                                      "nome": "Luiz da sousa",
+                                      "dataNascimento": "1980-03-29",
+                                      "sexo": "Masculino",
+                                      "mae": "Maria",
+                                      "pai": "Joaquim",
+                                      "matricula": "20000329"
+                         }""")})
+            ))
+    @PostMapping("")
+    public ResponseEntity<ServidorEfetivo> saveServidorTemporario(@RequestBody ServidorEfetivoDTO servidorEfetivoDTO) {
+        ServidorEfetivo servidorTemporariodb = servidorEfetivoService.salvarServidorTemporario(servidorEfetivoDTO);
+        return ResponseEntity.ok(servidorTemporariodb);
+    }
+
+    @Operation(
+            summary = "Alterar uma servidor efetivo",
+            description = "Endpoint para alterar uma servidor efetivo",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Dados do Servidor Efetivo a ser cadastrado",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ServidorEfetivo.class),
+                            examples = {@ExampleObject(name = "Exemplo 1 - Servidor efetivo Pedro", value = """
+                        { 
+                            "pesId": 3,
+                           "nome": "Atualizado Pedro",
+                           "dataNascimento": "2025-03-29",
+                           "sexo": "Masculino",
+                           "mae": "Atualizado Teresa Oliveira",
+                           "pai": "Atualizado Antonio Oliveira",
+                            "matricula": "1234567"
+                         }""")})
+            ))
+    @PutMapping("")
+    public ResponseEntity<ServidorEfetivo> alterarServidorTemporario(@RequestBody ServidorEfetivoDTO servidorEfetivoDTO) {
+        ServidorEfetivo servidorTemporariodb = servidorEfetivoService.atualizarServidorTemporario(servidorEfetivoDTO);
+        return ResponseEntity.ok(servidorTemporariodb);
     }
 }

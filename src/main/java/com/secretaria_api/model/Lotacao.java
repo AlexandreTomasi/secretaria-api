@@ -1,11 +1,9 @@
 package com.secretaria_api.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
 
 import java.time.LocalDate;
 
-@Data
 @Entity
 @Table(name = "lotacao")
 public class Lotacao {
@@ -31,4 +29,55 @@ public class Lotacao {
 
     @Column(name = "lot_portaria", length = 100)
     private String portaria;
+
+    public Lotacao() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Pessoa getPessoa() {
+        return pessoa;
+    }
+
+    public void setPessoa(Pessoa pessoa) {
+        this.pessoa = pessoa;
+    }
+
+    public Unidade getUnidade() {
+        return unidade;
+    }
+
+    public void setUnidade(Unidade unidade) {
+        this.unidade = unidade;
+    }
+
+    public LocalDate getDataLotacao() {
+        return dataLotacao;
+    }
+
+    public void setDataLotacao(LocalDate dataLotacao) {
+        this.dataLotacao = dataLotacao;
+    }
+
+    public LocalDate getDataRemocao() {
+        return dataRemocao;
+    }
+
+    public void setDataRemocao(LocalDate dataRemocao) {
+        this.dataRemocao = dataRemocao;
+    }
+
+    public String getPortaria() {
+        return portaria;
+    }
+
+    public void setPortaria(String portaria) {
+        this.portaria = portaria;
+    }
 }

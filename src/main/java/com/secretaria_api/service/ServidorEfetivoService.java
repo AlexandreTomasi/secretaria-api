@@ -1,9 +1,8 @@
 package com.secretaria_api.service;
 
 import com.secretaria_api.dto.EnderecoFuncionalDTO;
+import com.secretaria_api.dto.ServidorEfetivoDTO;
 import com.secretaria_api.dto.ServidorUnidadeDTO;
-import com.secretaria_api.exception.ConflictException;
-import com.secretaria_api.exception.ErrorResponse;
 import com.secretaria_api.exception.NotFoundException;
 import com.secretaria_api.model.FotoPessoa;
 import com.secretaria_api.model.Pessoa;
@@ -11,7 +10,6 @@ import com.secretaria_api.model.ServidorEfetivo;
 import com.secretaria_api.repository.FotoPessoaRepository;
 import com.secretaria_api.repository.PessoaRepository;
 import com.secretaria_api.repository.ServidorEfetivoRepository;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -72,38 +70,6 @@ public class ServidorEfetivoService {
         return servidorEfetivoRepository.findById(id).orElse(null); // Retorna null se não encontrar
     }
 
-    // Método para salvar ou atualizar um servidor efetivo
-    public ServidorEfetivo saveServidorEfetivo(ServidorEfetivo servidorEfetivo) {
-        Pessoa pessoa = pessoaRepository.findById(servidorEfetivo.getPesId()).orElse(null);
-        if(pessoa == null){
-            throw new NotFoundException("Pessoa nao encontrada");
-        }
-        ServidorEfetivo banco = servidorEfetivoRepository.findById(servidorEfetivo.getPesId()).orElse(null);
-        if(banco != null){
-            throw new ConflictException("Já existe um Servidor Efetivo para esta pessoa.");
-        }
-        servidorEfetivo =  servidorEfetivoRepository.save(servidorEfetivo);
-        servidorEfetivo.setPessoa(pessoa);
-        return servidorEfetivo;
-    }
-
-    // Método para salvar ou atualizar um servidor efetivo
-    public ServidorEfetivo alteraServidorEfetivo(ServidorEfetivo servidorEfetivo) {
-        ServidorEfetivo banco = servidorEfetivoRepository.findById(servidorEfetivo.getPesId()).orElse(null);
-        if(banco == null){
-            throw new NotFoundException("Servidor nao encontrada");
-        }
-
-        Pessoa pessoa = pessoaRepository.findById(servidorEfetivo.getPesId()).orElse(null);
-        if(pessoa == null){
-            throw new NotFoundException("Pessoa nao encontrada");
-        }
-
-        servidorEfetivo =  servidorEfetivoRepository.save(servidorEfetivo);
-        servidorEfetivo.setPessoa(pessoa);
-        return servidorEfetivo;
-    }
-
     // Método para deletar um servidor efetivo por ID
     public void deleteServidorEfetivo(Long id) {
         ServidorEfetivo banco = servidorEfetivoRepository.findById(id).orElse(null);
@@ -111,5 +77,44 @@ public class ServidorEfetivoService {
             throw new NotFoundException("Servidor efetivo nao encontrada");
         }
         servidorEfetivoRepository.deleteById(id);
+    }
+
+    public ServidorEfetivo salvarServidorTemporario(ServidorEfetivoDTO servidorEfetivoDTO) {
+        if(servidorEfetivoDTO == null){
+            throw new RuntimeException("Obrigatorio enviar o servidor");
+        }
+        Pessoa pessoa = new Pessoa(
+                null,
+                servidorEfetivoDTO.getNome(),
+                servidorEfetivoDTO.getDataNascimento(),
+                servidorEfetivoDTO.getSexo(),
+                servidorEfetivoDTO.getMae(),
+                servidorEfetivoDTO.getPai()
+        );
+        ServidorEfetivo novo = new ServidorEfetivo();
+        novo.setPessoa(pessoa);
+        novo.setMatricula(servidorEfetivoDTO.getMatricula());
+        novo = servidorEfetivoRepository.save(novo);
+        return novo;
+    }
+
+    public ServidorEfetivo atualizarServidorTemporario(ServidorEfetivoDTO servidorEfetivoDTO) {
+        if(servidorEfetivoDTO == null || servidorEfetivoDTO.getPesId() == null){
+            throw new RuntimeException("Obrigatorio enviar o servidor");
+        }
+        ServidorEfetivo servidorB = servidorEfetivoRepository.findById(servidorEfetivoDTO.getPesId()).orElse(null);
+        if(servidorB == null){
+            throw new NotFoundException("Servidor efetivo nao encontrado");
+        }
+
+        servidorB.getPessoa().setNome(servidorEfetivoDTO.getNome());
+        servidorB.getPessoa().setDataNascimento(servidorEfetivoDTO.getDataNascimento());
+        servidorB.getPessoa().setSexo(servidorEfetivoDTO.getSexo());
+        servidorB.getPessoa().setMae(servidorEfetivoDTO.getMae());
+        servidorB.getPessoa().setPai(servidorEfetivoDTO.getPai());
+        servidorB.setMatricula(servidorEfetivoDTO.getMatricula());
+
+        servidorB = servidorEfetivoRepository.save(servidorB);
+        return servidorB;
     }
 }

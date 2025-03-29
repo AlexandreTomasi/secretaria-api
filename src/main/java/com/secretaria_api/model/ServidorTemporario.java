@@ -1,11 +1,10 @@
 package com.secretaria_api.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
 
 import java.time.LocalDate;
 
-@Data
+
 @Entity
 @Table(name = "servidor_temporario")
 public class ServidorTemporario {
@@ -22,6 +21,42 @@ public class ServidorTemporario {
 
     // Relacionamento com 'Pessoa'
     @OneToOne
-    @JoinColumn(name = "pes_id", referencedColumnName = "pes_id", insertable = false, updatable = false)
+    @MapsId
+    @JoinColumn(name = "pes_id", referencedColumnName = "pes_id")
     private Pessoa pessoa;
+
+    public ServidorTemporario() {
+    }
+
+    public Long getPesId() {
+        return pesId;
+    }
+
+    public void setPesId(Long pesId) {
+        this.pesId = pesId;
+    }
+
+    public LocalDate getDataAdmissao() {
+        return dataAdmissao;
+    }
+
+    public void setDataAdmissao(LocalDate dataAdmissao) {
+        this.dataAdmissao = dataAdmissao;
+    }
+
+    public LocalDate getDataDemissao() {
+        return dataDemissao;
+    }
+
+    public void setDataDemissao(LocalDate dataDemissao) {
+        this.dataDemissao = dataDemissao;
+    }
+
+    public Pessoa getPessoa() {
+        return pessoa;
+    }
+
+    public void setPessoa(Pessoa pessoa) {
+        this.pessoa = pessoa;
+    }
 }
