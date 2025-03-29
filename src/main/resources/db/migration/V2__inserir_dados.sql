@@ -14,7 +14,11 @@ INSERT INTO endereco (end_tipo_logradouro, end_logradouro, end_numero, end_bairr
 INSERT INTO pessoa (pes_nome, pes_data_nascimento, pes_sexo, pes_mae, pes_pai) VALUES
 ('João Silva', '1985-07-10', 'Masculino', 'Maria Silva', 'Carlos Silva'),
 ('Ana Souza', '1992-03-25', 'Feminino', 'Clara Souza', 'José Souza'),
-('Pedro Oliveira', '1978-11-13', 'Masculino', 'Teresa Oliveira', 'Antonio Oliveira');
+('Pedro Oliveira', '1978-11-13', 'Masculino', 'Teresa Oliveira', 'Antonio Oliveira'),
+('Alexandre', '1978-11-13', 'Masculino', 'Teresa Oliveira', 'Antonio Oliveira'),
+('Andre', '1978-11-13', 'Masculino', 'Teresa Oliveira', 'Antonio Oliveira'),
+('Marcela', '1978-11-13', 'Feminino', 'Teresa Oliveira', 'Antonio Oliveira'),
+('Giovana', '1978-11-13', 'Feminino', 'Teresa Oliveira', 'Antonio Oliveira');
 
 -- Relacionando pessoas a endereços
 INSERT INTO pessoa_endereco (pes_id, end_id) VALUES

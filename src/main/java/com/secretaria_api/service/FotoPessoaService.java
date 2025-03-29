@@ -55,4 +55,14 @@ public class FotoPessoaService {
         fotoPessoa.setUrl(minioService.gerarLinkDownload(fotoPessoa.getHash()));
         return fotoPessoa;
     }
+
+    public List<String> gerarLinkVariasFotosPessoa(List<FotoPessoa> fotos){
+        List<String> resposta = new ArrayList<>();
+        if(fotos != null) {
+            for (FotoPessoa foto : fotos) {
+                resposta.add(minioService.gerarLinkDownload(foto.getHash()));
+            }
+        }
+        return resposta;
+    }
 }
