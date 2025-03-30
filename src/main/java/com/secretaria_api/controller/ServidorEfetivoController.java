@@ -203,7 +203,11 @@ public class ServidorEfetivoController {
 
     // Endpoint para obter um servidor efetivo por ID
     @GetMapping("/{id}")
-    public ResponseEntity<ServidorEfetivo> getServidorEfetivoById(@PathVariable Long id) {
+    public ResponseEntity<ServidorEfetivo> getServidorEfetivoById(@Parameter(
+            description = "ID ",
+            required = true,
+            example = "3"  // Exemplo numérico que aparecerá no Swagger
+    )@PathVariable Long id) {
         ServidorEfetivo servidorEfetivo = servidorEfetivoService.getServidorEfetivoById(id);
         return servidorEfetivo != null ? ResponseEntity.ok(servidorEfetivo) : ResponseEntity.notFound().build();
     }
@@ -211,7 +215,11 @@ public class ServidorEfetivoController {
 
     // Endpoint para deletar um servidor efetivo por ID
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteServidorEfetivo(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteServidorEfetivo(@Parameter(
+            description = "ID ",
+            required = true,
+            example = "3"  // Exemplo numérico que aparecerá no Swagger
+    )@PathVariable Long id) {
         servidorEfetivoService.deleteServidorEfetivo(id);
         return ResponseEntity.noContent().build();
     }

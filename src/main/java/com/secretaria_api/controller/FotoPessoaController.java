@@ -25,15 +25,32 @@ public class FotoPessoaController {
     FotoPessoaService fotoPessoaService;
 
     @Operation(summary = "Upload de múltiplas fotos para uma pessoa")
-    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/varias/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<List<FotoPessoa>> uploadFoto(
             @Parameter(description = "ID da pessoa", required = false)
             @RequestParam(value = "pessoaId", required = false) Long pessoaId,
             @Parameter(description = "Lista de arquivos de imagem", required = false)
-            @RequestParam(value = "arquivo" , required = false) MultipartFile[] arquivos) {
+            @RequestParam(value = "arquivos" , required = false) MultipartFile[] arquivos) {
 
         try {
             List<FotoPessoa> fotoPessoa = fotoPessoaService.create(pessoaId, arquivos);
+
+            return ResponseEntity.ok(fotoPessoa);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @Operation(summary = "Upload de múltiplas fotos para uma pessoa")
+    @PostMapping(value = "/uma/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<List<FotoPessoa>> uploadFoto(
+            @Parameter(description = "ID da pessoa", required = false)
+            @RequestParam(value = "pessoaId", required = false) Long pessoaId,
+            @Parameter(description = "Lista de arquivos de imagem", required = false)
+            @RequestParam(value = "arquivos" , required = false) MultipartFile arquivo) {
+
+        try {
+            List<FotoPessoa> fotoPessoa = fotoPessoaService.createUma(pessoaId, arquivo);
 
             return ResponseEntity.ok(fotoPessoa);
         } catch (Exception e) {

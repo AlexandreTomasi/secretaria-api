@@ -39,10 +39,29 @@ public class FotoPessoaService {
             fotoPessoa.setBucket(bucketName);
             fotoPessoa = fotoPessoaRepository.save(fotoPessoa);
 
-            String hash = minioService.uploadFile(fotoPessoa.getId(), arquivos[0]);
+            String hash = minioService.uploadFile(fotoPessoa.getId(), file);
             fotoPessoa.setHash(hash);
             list.add(fotoPessoaRepository.save(fotoPessoa));
+            fotoPessoa.setUrl(minioService.gerarLinkDownload(hash));
         }
+        return list;
+    }
+
+    public List<FotoPessoa> createUma(Long pessoaId, MultipartFile arquivo) {
+        Pessoa pessoa = pessoaRepository.findById(pessoaId)
+                .orElseThrow(() -> new RuntimeException("Pessoa não encontrada"));
+        List<FotoPessoa> list = new ArrayList<>();
+
+            FotoPessoa fotoPessoa = new FotoPessoa();
+            fotoPessoa.setPessoa(pessoa);
+            fotoPessoa.setData(LocalDate.now());
+            fotoPessoa.setBucket(bucketName);
+            fotoPessoa = fotoPessoaRepository.save(fotoPessoa);
+
+            String hash = minioService.uploadFile(fotoPessoa.getId(), arquivo);
+            fotoPessoa.setHash(hash);
+            list.add(fotoPessoaRepository.save(fotoPessoa));
+            fotoPessoa.setUrl(minioService.gerarLinkDownload(hash));
         return list;
     }
 

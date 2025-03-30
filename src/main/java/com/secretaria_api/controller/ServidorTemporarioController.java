@@ -43,14 +43,22 @@ public class ServidorTemporarioController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteServidorTemporario(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteServidorTemporario(@Parameter(
+            description = "ID ",
+            required = true,
+            example = "6"  // Exemplo numérico que aparecerá no Swagger
+    )@PathVariable Long id) {
         servidorTemporarioService.deleteServidorTemporario(id);
         return ResponseEntity.noContent().build();
     }
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<ServidorTemporario> getServidorTemporarioById(@PathVariable Long id) {
+    public ResponseEntity<ServidorTemporario> getServidorTemporarioById(@Parameter(
+            description = "ID ",
+            required = true,
+            example = "3"  // Exemplo numérico que aparecerá no Swagger
+    )@PathVariable Long id) {
         ServidorTemporario servidorTemporario = servidorTemporarioService.buscaPorId(id);
         return servidorTemporario != null ? ResponseEntity.ok(servidorTemporario) : ResponseEntity.notFound().build();
     }

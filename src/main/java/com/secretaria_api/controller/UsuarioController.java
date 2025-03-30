@@ -72,10 +72,10 @@ public class UsuarioController {
             }
     )
     @GetMapping
-    public ResponseEntity<Page<Usuario>> listarUsuarios(
+    public ResponseEntity<Page<UsuarioDTO>> listarUsuarios(
             @Parameter(hidden = true) @PageableDefault(size = 10, sort = "nome") Pageable pageable) {
         Page<Usuario> usuarios = usuarioService.listarTodos(pageable);
         Page<UsuarioDTO> usuariosDTO = usuarios.map(Usuario::toDTO);
-        return ResponseEntity.ok(usuarios);
+        return ResponseEntity.ok(usuariosDTO);
     }
 }

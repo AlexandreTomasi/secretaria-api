@@ -22,20 +22,20 @@ INSERT INTO cidade (cid_id, cid_nome, cid_uf) VALUES
 (20, 'Jaciara', 'MT');
 
 -- Inserindo endereços
-INSERT INTO endereco (end_id, end_tipo_logradouro, end_logradouro, end_numero, end_bairro, cid_id) VALUES
-(1, 'Rua', 'Paulista', 1000, 'Centro', 1),
-(2, 'Avenida', 'Atlântica', 500, 'Copacabana', 2),
-(3, 'Rua', 'Amazonas', 300, 'Savassi', 3);
+INSERT INTO endereco ( end_tipo_logradouro, end_logradouro, end_numero, end_bairro, cid_id) VALUES
+('Rua', 'Paulista', 1000, 'Centro', 1),
+('Avenida', 'Atlântica', 500, 'Copacabana', 2),
+('Rua', 'Amazonas', 300, 'Savassi', 3);
 
 -- Inserindo pessoas
-INSERT INTO pessoa (pes_id, pes_nome, pes_data_nascimento, pes_sexo, pes_mae, pes_pai) VALUES
-(1, 'João Silva', '1985-07-10', 'Masculino', 'Maria Silva', 'Carlos Silva'),
-(2, 'Ana Souza', '1992-03-25', 'Feminino', 'Clara Souza', 'José Souza'),
-(3, 'Pedro Oliveira', '1978-11-13', 'Masculino', 'Teresa Oliveira', 'Antonio Oliveira'),
-(4, 'Alexandre', '1978-11-13', 'Masculino', 'Teresa Oliveira', 'Antonio Oliveira'),
-(5, 'Andre', '1978-11-13', 'Masculino', 'Teresa Oliveira', 'Antonio Oliveira'),
-(6, 'Marcela', '1978-11-13', 'Feminino', 'Teresa Oliveira', 'Antonio Oliveira'),
-(7, 'Giovana', '1978-11-13', 'Feminino', 'Teresa Oliveira', 'Antonio Oliveira');
+INSERT INTO pessoa (pes_nome, pes_data_nascimento, pes_sexo, pes_mae, pes_pai) VALUES
+('João Silva', '1985-07-10', 'Masculino', 'Maria Silva', 'Carlos Silva'),
+('Ana Souza', '1992-03-25', 'Feminino', 'Clara Souza', 'José Souza'),
+('Pedro Oliveira', '1978-11-13', 'Masculino', 'Teresa Oliveira', 'Antonio Oliveira'),
+('Alexandre', '1978-11-13', 'Masculino', 'Teresa Oliveira', 'Antonio Oliveira'),
+('Andre', '1978-11-13', 'Masculino', 'Teresa Oliveira', 'Antonio Oliveira'),
+('Marcela', '1978-11-13', 'Feminino', 'Teresa Oliveira', 'Antonio Oliveira'),
+('Giovana', '1978-11-13', 'Feminino', 'Teresa Oliveira', 'Antonio Oliveira');
 
 -- Relacionando pessoas a endereços
 INSERT INTO pessoa_endereco (pes_id, end_id) VALUES

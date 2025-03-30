@@ -31,27 +31,35 @@ public class UnidadeController {
             description = "Retorna uma lista paginada de usuários",
             parameters = {
                     @Parameter(name = "page", description = "Número da página (0-based)", example = "0", in = ParameterIn.QUERY),
-                    @Parameter(name = "size", description = "Quantidade de itens por página", example = "2", in = ParameterIn.QUERY),
+                    @Parameter(name = "size", description = "Quantidade de itens por página", example = "10", in = ParameterIn.QUERY),
                     @Parameter(name = "sort", description = "Critério de ordenação (ex: id,desc)", example = "id,desc", in = ParameterIn.QUERY)
             }
     )
     @GetMapping
     public ResponseEntity<Page<Unidade>> listarUsuarios(
-            @Parameter(hidden = true) @PageableDefault(size = 2, sort = "nome") Pageable pageable) {
+            @Parameter(hidden = true) @PageableDefault(size = 10, sort = "nome") Pageable pageable) {
         Page<Unidade> usuarios = unidadeService.listarTodos(pageable);
         //Page<UsuarioDTO> usuariosDTO = usuarios.map(Usuario::toDTO);
         return ResponseEntity.ok(usuarios);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUnidade(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteUnidade(@Parameter(
+            description = "ID ",
+            required = true,
+            example = "3"  // Exemplo numérico que aparecerá no Swagger
+    )@PathVariable Long id) {
         unidadeService.deleteUnidade(id);
         return ResponseEntity.noContent().build();
     }
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<Unidade> getUnidadeById(@PathVariable Long id) {
+    public ResponseEntity<Unidade> getUnidadeById(@Parameter(
+            description = "ID ",
+            required = true,
+            example = "2"  // Exemplo numérico que aparecerá no Swagger
+    )@PathVariable Long id) {
         Unidade unidade = unidadeService.buscaPorId(id);
         return unidade != null ? ResponseEntity.ok(unidade) : ResponseEntity.notFound().build();
     }

@@ -43,14 +43,23 @@ public class LotacaoController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteLotacao(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteLotacao(@Parameter(
+            description = "ID da lotação",
+            required = true,
+            example = "2"  // Exemplo numérico que aparecerá no Swagger
+    )@PathVariable Long id) {
         lotacaoService.deleteLotacao(id);
         return ResponseEntity.noContent().build();
     }
 
 
+    @Operation(summary = "Obter lotação por ID", description = "Retorna uma lotação específica com base no ID fornecido")
     @GetMapping("/{id}")
-    public ResponseEntity<Lotacao> getLotacaoById(@PathVariable Long id) {
+    public ResponseEntity<Lotacao> getLotacaoById(@Parameter(
+            description = "ID da lotação",
+            required = true,
+            example = "1"  // Exemplo numérico que aparecerá no Swagger
+    ) @PathVariable Long id) {
         Lotacao lotacao = lotacaoService.buscaPorId(id);
         return lotacao != null ? ResponseEntity.ok(lotacao) : ResponseEntity.notFound().build();
     }
