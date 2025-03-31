@@ -1,13 +1,18 @@
 package com.secretaria_api.dto;
 
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.LocalDate;
 import java.util.List;
 
-public class ServidorEfetivoDTO {
-    private Long pesId;
+public class PessoaDTO {
+
+    private Long id;
 
     private String nome;
 
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dataNascimento;
 
     private String sexo;
@@ -16,19 +21,14 @@ public class ServidorEfetivoDTO {
 
     private String pai;
 
-    private String matricula;
+    private List<EnderecoDTO> enderecos;
 
-    private List<EnderecoDTO> enderecoDTO;
-
-    public ServidorEfetivoDTO() {
+    public Long getId() {
+        return id;
     }
 
-    public Long getPesId() {
-        return pesId;
-    }
-
-    public void setPesId(Long pesId) {
-        this.pesId = pesId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNome() {
@@ -71,19 +71,14 @@ public class ServidorEfetivoDTO {
         this.pai = pai;
     }
 
-    public String getMatricula() {
-        return matricula;
+    public List<EnderecoDTO> getEnderecos() {
+        return enderecos;
     }
 
-    public void setMatricula(String matricula) {
-        this.matricula = matricula;
+    public void setEnderecos(List<EnderecoDTO> enderecos) {
+        this.enderecos = enderecos;
     }
 
-    public List<EnderecoDTO> getEnderecoDTO() {
-        return enderecoDTO;
-    }
-
-    public void setEnderecoDTO(List<EnderecoDTO> enderecoDTO) {
-        this.enderecoDTO = enderecoDTO;
+    public PessoaDTO() {
     }
 }

@@ -64,10 +64,10 @@ public class ServidorTemporarioController {
     }
 
     @Operation(
-            summary = "Cadastrar uma servidorTemporario",
+            summary = "Cadastrar uma servidor Temporario",
             description = "Endpoint para cadastrar uma servidorTemporario",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
-                    description = "Dados do Servidor Efetivo a ser cadastrado",
+                    description = "Dados do Servidor temporario a ser cadastrado",
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ServidorEfetivo.class),
                             examples = {@ExampleObject(name = "Exemplo 1 - ServidorTemporario X", value = """
@@ -78,7 +78,14 @@ public class ServidorTemporarioController {
                                       "mae": "Maria",
                                       "pai": "Joaquim",
                                       "dataAdmissao": "2000-03-29",
-                                      "dataDemissao": "2025-03-29"
+                                      "dataDemissao": "2025-03-29",
+                                        "enderecoDTO": [{
+                                                "tipoLogradouro": "Rua",
+                                                "logradouro": "rua amarela brasil",
+                                                "numero": 245,
+                                                "bairro": "centro",
+                                                "cidadeId": 2
+                                                }]
                          }""")})
             ))
     @PostMapping
@@ -103,7 +110,17 @@ public class ServidorTemporarioController {
                            "mae": "Atualizado Teresa Oliveira",
                            "pai": "Atualizado Antonio Oliveira",
                            "dataAdmissao": "2001-01-01",
-                           "dataDemissao": "2024-12-01"
+                           "dataDemissao": "2024-12-01",
+                           "enderecoDTO": [
+                                {
+                                    "id": 3,
+                                    "tipoLogradouro": "Rua",
+                                    "logradouro": "rua verde brasil",
+                                    "numero": 444,
+                                    "bairro": "araes",
+                                    "cidadeId": 2
+                                }
+                                ]
                          }""")})
             ))
     @PutMapping

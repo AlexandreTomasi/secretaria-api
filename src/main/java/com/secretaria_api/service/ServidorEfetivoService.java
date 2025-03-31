@@ -1,17 +1,12 @@
 package com.secretaria_api.service;
 
+import com.secretaria_api.dto.EnderecoDTO;
 import com.secretaria_api.dto.EnderecoFuncionalDTO;
 import com.secretaria_api.dto.ServidorEfetivoDTO;
 import com.secretaria_api.dto.ServidorUnidadeDTO;
 import com.secretaria_api.exception.NotFoundException;
-import com.secretaria_api.model.FotoPessoa;
-import com.secretaria_api.model.Lotacao;
-import com.secretaria_api.model.Pessoa;
-import com.secretaria_api.model.ServidorEfetivo;
-import com.secretaria_api.repository.FotoPessoaRepository;
-import com.secretaria_api.repository.LotacaoRepository;
-import com.secretaria_api.repository.PessoaRepository;
-import com.secretaria_api.repository.ServidorEfetivoRepository;
+import com.secretaria_api.model.*;
+import com.secretaria_api.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -37,6 +32,12 @@ public class ServidorEfetivoService {
 
     @Autowired
     LotacaoRepository lotacaoRepository;
+
+    @Autowired
+    CidadeRepository cidadeRepository;
+
+    @Autowired
+    EnderecoRepository enderecoRepository;
 
 
     public List<EnderecoFuncionalDTO> consultarEnderecoFuncional(String parteNome) {
@@ -81,20 +82,39 @@ public class ServidorEfetivoService {
                     (String) row[0], // nome
                     ((Number) row[1]).intValue(), // idade
                     (String) row[2], // unidade
-                    fotoPessoaService.gerarLinkVariasFotosPessoa(fotos)
+                    fotoPessoaService.gerarListaLinkVariasFotosPessoa(fotos)
             ));
         }
         return resultado;
     }
 
+
+
+
+
+
+
     // Método para buscar todos os servidores efetivos com paginação
     public Page<ServidorEfetivo> getAllServidoresEfetivos(Pageable pageable) {
-        return servidorEfetivoRepository.findAll(pageable);
+        Page<ServidorEfetivo> page = servidorEfetivoRepository.findAll(pageable);
+
+        return page.map(servidor -> {
+            if (servidor != null && servidor.getPessoa() != null && servidor.getPessoa().getFotos() != null) {
+                servidor.getPessoa().setFotos(
+                        fotoPessoaService.gerarLinkVariasFotosPessoa2(servidor.getPessoa().getFotos())
+                );
+            }
+            return servidor;
+        });
     }
 
     // Método para buscar um servidor efetivo por ID
     public ServidorEfetivo getServidorEfetivoById(Long id) {
-        return servidorEfetivoRepository.findById(id).orElse(null); // Retorna null se não encontrar
+        ServidorEfetivo resp =  servidorEfetivoRepository.findById(id).orElse(null);
+        if(resp != null && resp.getPessoa() != null && resp.getPessoa().getFotos() != null){
+            resp.getPessoa().setFotos(fotoPessoaService.gerarLinkVariasFotosPessoa2(resp.getPessoa().getFotos()));
+        }
+        return resp;
     }
 
     // Método para deletar um servidor efetivo por ID
@@ -116,8 +136,23 @@ public class ServidorEfetivoService {
                 servidorEfetivoDTO.getDataNascimento(),
                 servidorEfetivoDTO.getSexo(),
                 servidorEfetivoDTO.getMae(),
-                servidorEfetivoDTO.getPai()
+                servidorEfetivoDTO.getPai(),
+                new ArrayList<>()
         );
+        if(servidorEfetivoDTO.getEnderecoDTO() != null) {
+            for (EnderecoDTO end :servidorEfetivoDTO.getEnderecoDTO()) {
+                Cidade cidad = cidadeRepository.findById(end.getCidadeId()).orElseThrow();
+                pessoa.getEnderecos().add(new Endereco(
+                        null,
+                        end.getTipoLogradouro(),
+                        end.getLogradouro(),
+                        end.getNumero(),
+                        end.getBairro(),
+                        cidad,
+                        null
+                ));
+            }
+        }
         ServidorEfetivo novo = new ServidorEfetivo();
         novo.setPessoa(pessoa);
         novo.setMatricula(servidorEfetivoDTO.getMatricula());
@@ -140,6 +175,32 @@ public class ServidorEfetivoService {
         servidorB.getPessoa().setMae(servidorEfetivoDTO.getMae());
         servidorB.getPessoa().setPai(servidorEfetivoDTO.getPai());
         servidorB.setMatricula(servidorEfetivoDTO.getMatricula());
+
+        servidorB.getPessoa().getEnderecos().removeAll(servidorB.getPessoa().getEnderecos());
+        if (servidorEfetivoDTO.getEnderecoDTO() != null) {
+            for (EnderecoDTO end : servidorEfetivoDTO.getEnderecoDTO()) {
+                Cidade cidad = cidadeRepository.findById(end.getCidadeId()).orElseThrow();
+                if(end.getId() != null){
+                    Endereco endereco = enderecoRepository.findById(end.getId()).orElseThrow();
+                    endereco.setTipoLogradouro(end.getTipoLogradouro());
+                    endereco.setLogradouro(end.getLogradouro());
+                    endereco.setNumero(end.getNumero());
+                    endereco.setBairro(end.getBairro());
+                    endereco.setCidade(cidad);
+                    servidorB.getPessoa().getEnderecos().add(endereco);
+                }else {
+                    servidorB.getPessoa().getEnderecos().add(new Endereco(
+                            end.getId(),
+                            end.getTipoLogradouro(),
+                            end.getLogradouro(),
+                            end.getNumero(),
+                            end.getBairro(),
+                            cidad,
+                            null
+                    ));
+                }
+            }
+        }
 
         servidorB = servidorEfetivoRepository.save(servidorB);
         return servidorB;

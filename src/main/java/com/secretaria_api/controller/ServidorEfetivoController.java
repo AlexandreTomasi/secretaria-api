@@ -206,7 +206,7 @@ public class ServidorEfetivoController {
     public ResponseEntity<ServidorEfetivo> getServidorEfetivoById(@Parameter(
             description = "ID ",
             required = true,
-            example = "3"  // Exemplo numérico que aparecerá no Swagger
+            example = "2"  // Exemplo numérico que aparecerá no Swagger
     )@PathVariable Long id) {
         ServidorEfetivo servidorEfetivo = servidorEfetivoService.getServidorEfetivoById(id);
         return servidorEfetivo != null ? ResponseEntity.ok(servidorEfetivo) : ResponseEntity.notFound().build();
@@ -218,7 +218,7 @@ public class ServidorEfetivoController {
     public ResponseEntity<Void> deleteServidorEfetivo(@Parameter(
             description = "ID ",
             required = true,
-            example = "3"  // Exemplo numérico que aparecerá no Swagger
+            example = "2"  // Exemplo numérico que aparecerá no Swagger
     )@PathVariable Long id) {
         servidorEfetivoService.deleteServidorEfetivo(id);
         return ResponseEntity.noContent().build();
@@ -239,7 +239,14 @@ public class ServidorEfetivoController {
                                       "sexo": "Masculino",
                                       "mae": "Maria",
                                       "pai": "Joaquim",
-                                      "matricula": "20000329"
+                                      "matricula": "20000329",
+                                      "enderecoDTO": [{
+                                                "tipoLogradouro": "Rua",
+                                                "logradouro": "rua azul brasil",
+                                                "numero": 245,
+                                                "bairro": "centro",
+                                                "cidadeId": 2
+                                                }]
                          }""")})
             ))
     @PostMapping("")
@@ -263,7 +270,16 @@ public class ServidorEfetivoController {
                            "sexo": "Masculino",
                            "mae": "Atualizado Teresa Oliveira",
                            "pai": "Atualizado Antonio Oliveira",
-                            "matricula": "1234567"
+                            "matricula": "1234567",
+                            "enderecoDTO": [
+                                {
+                                    "id": 3,
+                                    "tipoLogradouro": "Rua",
+                                    "logradouro": "rua vermelha brasil",
+                                    "numero": 222,
+                                    "bairro": "araes",
+                                    "cidadeId": 2
+                                }]
                          }""")})
             ))
     @PutMapping("")

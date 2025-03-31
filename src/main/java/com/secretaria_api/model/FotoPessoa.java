@@ -1,5 +1,6 @@
 package com.secretaria_api.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -13,8 +14,9 @@ public class FotoPessoa {
     @Column(name = "fp_id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pes_id", referencedColumnName = "pes_id")
+    @JsonBackReference
     private Pessoa pessoa;
 
     @Column(name = "fp_data")

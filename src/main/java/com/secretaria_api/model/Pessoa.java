@@ -1,8 +1,12 @@
 package com.secretaria_api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -29,16 +33,29 @@ public class Pessoa {
     @Column(name = "pes_pai", length = 200)
     private String pai;
 
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "pessoa_endereco",
+            joinColumns = @JoinColumn(name = "pes_id"),
+            inverseJoinColumns = @JoinColumn(name = "end_id")
+    )
+    private List<Endereco> enderecos = new ArrayList<>();
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FotoPessoa> fotos;
+
     public Pessoa() {
     }
 
-    public Pessoa(Long id, String nome, LocalDate dataNascimento, String sexo, String mae, String pai) {
+    public Pessoa(Long id, String nome, LocalDate dataNascimento, String sexo, String mae, String pai, List<Endereco> enderecos) {
         this.id = id;
         this.nome = nome;
         this.dataNascimento = dataNascimento;
         this.sexo = sexo;
         this.mae = mae;
         this.pai = pai;
+        this.enderecos = enderecos;
     }
 
     public Long getId() {
@@ -89,4 +106,19 @@ public class Pessoa {
         this.pai = pai;
     }
 
+    public List<Endereco> getEnderecos() {
+        return enderecos;
+    }
+
+    public void setEnderecos(List<Endereco> enderecos) {
+        this.enderecos = enderecos;
+    }
+
+    public List<FotoPessoa> getFotos() {
+        return fotos;
+    }
+
+    public void setFotos(List<FotoPessoa> fotos) {
+        this.fotos = fotos;
+    }
 }

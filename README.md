@@ -14,8 +14,8 @@ email: alexandretomasi18@gmail.com
 
 ### Executando
 Instale o docker(versao mais recente) no sistema operacional.  
-Conforme foi pedido foi executado em container as tres partes do sistema que são elas:  
-banco de dados, sistema de arquivos minio e o proprio back-end  
+Conforme foi pedido foi executado em container as quatro partes do sistema que são elas:  
+banco de dados, sistema de arquivos minio, com nginx e o proprio back-end  
 Para executar via docker compose, basta abrir o terminal na raiz do projeto
 (na mesma pasta do arquivo "docker-compose.yml") e executar os seguinte comando.
 Pode ser que demore um pouco até baixar.
@@ -33,6 +33,7 @@ necessario clicar em *Try it out* e *Execute***
 Vá ao topo da pagina e clique em Authorize e no campo coloque o accessToken.  
 Pronto todas as Apis estarão autenticadas por 5 minutos, o refresh token dura 10 min.
 #### Obs: O swagger não consegue enviar varios arquivos, e sim somente um, sendo assim foi feito duas apis para enviar uma foto e outra para enviar varias fotos, a de enviar uma foto irá funcionar no swagger. Caso queira testar enviar varias fotos tera que usar um programa de sua preferencia como Postman, Talent Api tester e etc. Exemplo via Curl:  
+
 curl -i -X POST \
 -H "Content-Type:multipart/form-data" \
 -H "Authorization:Bearer eyJhbGciOiJIUzI1NiJ9.eyJub21lIjoiSm_Do28gU2lsdmEiLCJpZCI6MSwiZW1haWwiOiJhbGV4YW5kcmVAZ21haWwuY29tIiwic3ViIjoiYWxleGFuZHJlIiwiaWF0IjoxNzQzMjk0MjMzLCJleHAiOjE3NDMyOTQ4MzN9.nBzH5bi7-u6FH61MJfoLwmWpyGEOixZ_5FKnvrGxn0s" \

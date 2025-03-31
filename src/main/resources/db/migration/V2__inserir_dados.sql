@@ -35,7 +35,10 @@ INSERT INTO pessoa (pes_nome, pes_data_nascimento, pes_sexo, pes_mae, pes_pai) V
 ('Alexandre', '1978-11-13', 'Masculino', 'Teresa Oliveira', 'Antonio Oliveira'),
 ('Andre', '1978-11-13', 'Masculino', 'Teresa Oliveira', 'Antonio Oliveira'),
 ('Marcela', '1978-11-13', 'Feminino', 'Teresa Oliveira', 'Antonio Oliveira'),
-('Giovana', '1978-11-13', 'Feminino', 'Teresa Oliveira', 'Antonio Oliveira');
+('Giovana', '1978-11-13', 'Feminino', 'Teresa Oliveira', 'Antonio Oliveira'),
+('Carlos', '1978-11-13', 'Masculino', 'Joana', 'Antonio Oliveira'),
+('Eduardo', '1978-11-13', 'Masculino', 'Lucia Oliveira', 'Antonio Oliveira'),
+('Magaiver', '1978-11-13', 'Masculino', 'Joelma Oliveira', 'Antonio Oliveira');
 
 -- Relacionando pessoas a endereços
 INSERT INTO pessoa_endereco (pes_id, end_id) VALUES
@@ -52,7 +55,10 @@ INSERT INTO servidor_temporario (pes_id, st_data_admissao, st_data_demissao) VAL
 -- Inserindo servidores efetivos
 INSERT INTO servidor_efetivo (pes_id, se_matricula) VALUES
 (2, '20231000'),
-(3, '20231001');
+(3, '20231001'),
+(4, '20231001'),
+(5, '20231001'),
+(6, '20231001');
 
 -- Inserindo unidades
 INSERT INTO unidade (unid_nome, unid_sigla) VALUES
@@ -83,7 +89,10 @@ INSERT INTO unidade_endereco (unid_id, end_id) VALUES
 -- Inserindo lotações
 INSERT INTO lotacao (pes_id, unid_id, lot_data_lotacao, lot_data_remocao, lot_portaria) VALUES
 (2, 1, '2021-05-10', NULL, 'Portaria 001/2021'),
-(3, 2, '2019-09-20', NULL, 'Portaria 002/2019');
+(3, 2, '2019-09-20', NULL, 'Portaria 002/2019'),
+(4, 3, '2019-09-20', NULL, 'Portaria 002/2019'),
+(5, 4, '2019-09-20', NULL, 'Portaria 002/2019'),
+(6, 5, '2019-09-20', NULL, 'Portaria 002/2019');
 
 
 INSERT INTO usuario (user_nome, user_login, user_senha, user_email) VALUES

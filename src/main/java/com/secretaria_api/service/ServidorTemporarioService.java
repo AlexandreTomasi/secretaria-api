@@ -1,16 +1,19 @@
 package com.secretaria_api.service;
 
+import com.secretaria_api.dto.EnderecoDTO;
 import com.secretaria_api.dto.ServidorTemporarioDTO;
 import com.secretaria_api.exception.NotFoundException;
+import com.secretaria_api.model.Cidade;
+import com.secretaria_api.model.Endereco;
 import com.secretaria_api.model.Pessoa;
 import com.secretaria_api.model.ServidorTemporario;
-import com.secretaria_api.repository.PessoaRepository;
-import com.secretaria_api.repository.ServidorTemporarioRepository;
-import com.secretaria_api.repository.UnidadeRepository;
+import com.secretaria_api.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 
 @Service
 public class ServidorTemporarioService {
@@ -24,9 +27,26 @@ public class ServidorTemporarioService {
     @Autowired
     UnidadeRepository unidadeRepository;
 
+    @Autowired
+    CidadeRepository cidadeRepository;
+
+    @Autowired
+    EnderecoRepository enderecoRepository;
+
+    @Autowired
+    private FotoPessoaService fotoPessoaService;
+
 
     public Page<ServidorTemporario> listarTodos(Pageable pageable) {
-        return servidorTemporarioRepository.findAll(pageable);
+        Page<ServidorTemporario> page = servidorTemporarioRepository.findAll(pageable);
+        return page.map(servidor -> {
+            if (servidor != null && servidor.getPessoa() != null && servidor.getPessoa().getFotos() != null) {
+                servidor.getPessoa().setFotos(
+                        fotoPessoaService.gerarLinkVariasFotosPessoa2(servidor.getPessoa().getFotos())
+                );
+            }
+            return servidor;
+        });
     }
 
     public void deleteServidorTemporario(Long id) {
@@ -42,6 +62,9 @@ public class ServidorTemporarioService {
         if(ServidorTemporario == null){
             throw new NotFoundException("Servidor Temporario nao encontrado");
         }
+        if(ServidorTemporario != null && ServidorTemporario.getPessoa() != null && ServidorTemporario.getPessoa().getFotos() != null){
+            ServidorTemporario.getPessoa().setFotos(fotoPessoaService.gerarLinkVariasFotosPessoa2(ServidorTemporario.getPessoa().getFotos()));
+        }
         return ServidorTemporario;
     }
 
@@ -55,8 +78,23 @@ public class ServidorTemporarioService {
                 servidorTemporario.getDataNascimento(),
                 servidorTemporario.getSexo(),
                 servidorTemporario.getMae(),
-                servidorTemporario.getPai()
+                servidorTemporario.getPai(),
+                new ArrayList<>()
                 );
+        if(servidorTemporario.getEnderecoDTO() != null) {
+            for (EnderecoDTO end :servidorTemporario.getEnderecoDTO()) {
+                Cidade cidad = cidadeRepository.findById(end.getCidadeId()).orElseThrow();
+                pessoa.getEnderecos().add(new Endereco(
+                        null,
+                        end.getTipoLogradouro(),
+                        end.getLogradouro(),
+                        end.getNumero(),
+                        end.getBairro(),
+                        cidad,
+                        null
+                ));
+            }
+        }
         ServidorTemporario novo = new ServidorTemporario();
         novo.setPessoa(pessoa);
         novo.setDataAdmissao(servidorTemporario.getDataAdmissao());
@@ -73,17 +111,47 @@ public class ServidorTemporarioService {
         if(servidorB == null){
             throw new NotFoundException("Servidor Temporario nao encontrado");
         }
+        try {
+            servidorB.getPessoa().setNome(servidorTemporario.getNome());
+            servidorB.getPessoa().setDataNascimento(servidorTemporario.getDataNascimento());
+            servidorB.getPessoa().setSexo(servidorTemporario.getSexo());
+            servidorB.getPessoa().setMae(servidorTemporario.getMae());
+            servidorB.getPessoa().setPai(servidorTemporario.getPai());
+            servidorB.setDataDemissao(servidorTemporario.getDataDemissao());
+            servidorB.setDataAdmissao(servidorTemporario.getDataAdmissao());
 
-        servidorB.getPessoa().setNome(servidorTemporario.getNome());
-        servidorB.getPessoa().setDataNascimento(servidorTemporario.getDataNascimento());
-        servidorB.getPessoa().setSexo(servidorTemporario.getSexo());
-        servidorB.getPessoa().setMae(servidorTemporario.getMae());
-        servidorB.getPessoa().setPai(servidorTemporario.getPai());
-        servidorB.setDataDemissao(servidorTemporario.getDataDemissao());
-        servidorB.setDataAdmissao(servidorTemporario.getDataAdmissao());
+            servidorB.getPessoa().getEnderecos().removeAll(servidorB.getPessoa().getEnderecos());
+            if (servidorTemporario.getEnderecoDTO() != null) {
+                for (EnderecoDTO end : servidorTemporario.getEnderecoDTO()) {
+                    Cidade cidad = cidadeRepository.findById(end.getCidadeId()).orElseThrow();
+                    if(end.getId() != null){
+                        Endereco endereco = enderecoRepository.findById(end.getId()).orElseThrow();
+                        endereco.setTipoLogradouro(end.getTipoLogradouro());
+                        endereco.setLogradouro(end.getLogradouro());
+                        endereco.setNumero(end.getNumero());
+                        endereco.setBairro(end.getBairro());
+                        endereco.setCidade(cidad);
+                        servidorB.getPessoa().getEnderecos().add(endereco);
+                    }else {
+                        servidorB.getPessoa().getEnderecos().add(new Endereco(
+                                end.getId(),
+                                end.getTipoLogradouro(),
+                                end.getLogradouro(),
+                                end.getNumero(),
+                                end.getBairro(),
+                                cidad,
+                                null
+                        ));
+                    }
+                }
+            }
 
-        servidorB = servidorTemporarioRepository.save(servidorB);
-        return servidorB;
+            servidorB = servidorTemporarioRepository.save(servidorB);
+            return servidorB;
+        }catch (Exception e){
+            e.printStackTrace();
+            throw e;
+        }
     }
 
 

@@ -1,6 +1,7 @@
 package com.secretaria_api.dto;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class ServidorTemporarioDTO {
     private Long pesId;
@@ -18,6 +19,11 @@ public class ServidorTemporarioDTO {
     private LocalDate dataAdmissao;
 
     private LocalDate dataDemissao;
+
+    private List<EnderecoDTO> enderecoDTO;
+
+    public ServidorTemporarioDTO() {
+    }
 
     public Long getPesId() {
         return pesId;
@@ -81,5 +87,13 @@ public class ServidorTemporarioDTO {
 
     public void setDataDemissao(LocalDate dataDemissao) {
         this.dataDemissao = dataDemissao;
+    }
+
+    public List<EnderecoDTO> getEnderecoDTO() {
+        return enderecoDTO;
+    }
+
+    public void setEnderecoDTO(List<EnderecoDTO> enderecoDTO) {
+        this.enderecoDTO = enderecoDTO;
     }
 }

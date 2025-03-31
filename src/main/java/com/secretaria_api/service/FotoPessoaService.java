@@ -50,8 +50,9 @@ public class FotoPessoaService {
     public List<FotoPessoa> createUma(Long pessoaId, MultipartFile arquivo) {
         Pessoa pessoa = pessoaRepository.findById(pessoaId)
                 .orElseThrow(() -> new RuntimeException("Pessoa não encontrada"));
-        List<FotoPessoa> list = new ArrayList<>();
 
+        try {
+            List<FotoPessoa> list = new ArrayList<>();
             FotoPessoa fotoPessoa = new FotoPessoa();
             fotoPessoa.setPessoa(pessoa);
             fotoPessoa.setData(LocalDate.now());
@@ -62,7 +63,11 @@ public class FotoPessoaService {
             fotoPessoa.setHash(hash);
             list.add(fotoPessoaRepository.save(fotoPessoa));
             fotoPessoa.setUrl(minioService.gerarLinkDownload(hash));
-        return list;
+            return list;
+        }catch (Exception e){
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     public FotoPessoa buscaFoto(Long fotoId){
@@ -74,7 +79,7 @@ public class FotoPessoaService {
         return fotoPessoa;
     }
 
-    public List<String> gerarLinkVariasFotosPessoa(List<FotoPessoa> fotos){
+    public List<String> gerarListaLinkVariasFotosPessoa(List<FotoPessoa> fotos){
         List<String> resposta = new ArrayList<>();
         if(fotos != null) {
             for (FotoPessoa foto : fotos) {
@@ -82,5 +87,14 @@ public class FotoPessoaService {
             }
         }
         return resposta;
+    }
+
+    public List<FotoPessoa> gerarLinkVariasFotosPessoa2(List<FotoPessoa> fotos){
+        if(fotos != null) {
+            for (FotoPessoa foto : fotos) {
+                foto.setUrl(minioService.gerarLinkDownload(foto.getHash()));
+            }
+        }
+        return fotos;
     }
 }

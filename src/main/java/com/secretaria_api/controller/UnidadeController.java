@@ -28,7 +28,7 @@ public class UnidadeController {
 
     @Operation(
             summary = "Listar unidades paginado",
-            description = "Retorna uma lista paginada de usuários",
+            description = "Retorna uma lista paginada de unidades",
             parameters = {
                     @Parameter(name = "page", description = "Número da página (0-based)", example = "0", in = ParameterIn.QUERY),
                     @Parameter(name = "size", description = "Quantidade de itens por página", example = "10", in = ParameterIn.QUERY),
@@ -47,7 +47,7 @@ public class UnidadeController {
     public ResponseEntity<Void> deleteUnidade(@Parameter(
             description = "ID ",
             required = true,
-            example = "3"  // Exemplo numérico que aparecerá no Swagger
+            example = "3"
     )@PathVariable Long id) {
         unidadeService.deleteUnidade(id);
         return ResponseEntity.noContent().build();
@@ -58,7 +58,7 @@ public class UnidadeController {
     public ResponseEntity<Unidade> getUnidadeById(@Parameter(
             description = "ID ",
             required = true,
-            example = "2"  // Exemplo numérico que aparecerá no Swagger
+            example = "2"
     )@PathVariable Long id) {
         Unidade unidade = unidadeService.buscaPorId(id);
         return unidade != null ? ResponseEntity.ok(unidade) : ResponseEntity.notFound().build();
@@ -68,7 +68,7 @@ public class UnidadeController {
             summary = "Cadastrar uma unidade",
             description = "Endpoint para cadastrar uma unidade",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
-                    description = "Dados do Servidor Efetivo a ser cadastrado",
+                    description = "Dados da unidade a ser cadastrado",
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ServidorEfetivo.class),
                             examples = {@ExampleObject(name = "Exemplo 1 - Unidade X", value = """
@@ -113,7 +113,7 @@ public class UnidadeController {
             summary = "Alterar uma unidade",
             description = "Endpoint para alterar uma unidade",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
-                    description = "Dados do Servidor Efetivo a ser cadastrado",
+                    description = "Dados da unidade a ser  alterada",
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ServidorEfetivo.class),
                             examples = {@ExampleObject(name = "Exemplo 1 - Unidade X", value = """

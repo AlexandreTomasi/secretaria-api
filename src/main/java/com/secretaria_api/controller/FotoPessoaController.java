@@ -27,10 +27,10 @@ public class FotoPessoaController {
     @Operation(summary = "Upload de múltiplas fotos para uma pessoa")
     @PostMapping(value = "/varias/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<List<FotoPessoa>> uploadFoto(
-            @Parameter(description = "ID da pessoa", required = false)
-            @RequestParam(value = "pessoaId", required = false) Long pessoaId,
-            @Parameter(description = "Lista de arquivos de imagem", required = false)
-            @RequestParam(value = "arquivos" , required = false) MultipartFile[] arquivos) {
+            @Parameter(description = "ID da pessoa", required = true)
+            @RequestParam(value = "pessoaId", required = true) Long pessoaId,
+            @Parameter(description = "Lista de arquivos de imagem", required = true)
+            @RequestParam(value = "arquivos" , required = true) MultipartFile[] arquivos) {
 
         try {
             List<FotoPessoa> fotoPessoa = fotoPessoaService.create(pessoaId, arquivos);
@@ -41,13 +41,13 @@ public class FotoPessoaController {
         }
     }
 
-    @Operation(summary = "Upload de múltiplas fotos para uma pessoa")
+    @Operation(summary = "Upload de uma foto para uma pessoa")
     @PostMapping(value = "/uma/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<List<FotoPessoa>> uploadFoto(
-            @Parameter(description = "ID da pessoa", required = false)
-            @RequestParam(value = "pessoaId", required = false) Long pessoaId,
-            @Parameter(description = "Lista de arquivos de imagem", required = false)
-            @RequestParam(value = "arquivos" , required = false) MultipartFile arquivo) {
+            @Parameter(description = "ID da pessoa", required = true, example = "2")
+            @RequestParam(value = "pessoaId", required = true) Long pessoaId,
+            @Parameter(description = "Lista de arquivos de imagem", required = true)
+            @RequestParam(value = "arquivos" , required = true) MultipartFile arquivo) {
 
         try {
             List<FotoPessoa> fotoPessoa = fotoPessoaService.createUma(pessoaId, arquivo);
