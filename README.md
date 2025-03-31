@@ -3,7 +3,7 @@
 ### Meus Dados
 Alexandre Tomasi  
 Cargo interesse: DESENVOLVIMENTO, Desenvolvedor JAVA (Back-end)  
-email: alexandretomasi18@gmail.com
+email: alexandretomasidev@gmail.com
 
 ### Arquitetura
 - Java 24
