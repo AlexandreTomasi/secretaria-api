@@ -2,7 +2,7 @@
 
 ### Meus Dados
 inscrição: PSS 02/2025/SEPLAG (Analista de TI - Perfil Junior, Pleno e Sênior)  
-Número da inscrição: 9856  
+Número da inscrição: 9933  
 CPF: 03323458150  
 Perfil: DESENVOLVEDOR JAVA (BACK-END) - SÊNIOR  
 Alexandre Tomasi  
